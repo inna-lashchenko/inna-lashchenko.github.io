@@ -7,8 +7,8 @@ addresses.forEach(function(item, index, arr){
     var test=street.exec(item);
     result[index]={
         "street":test[2],
-        "house":test[4]||"no house",
-        "flat":test[8]||test[6]||"no flat"
+        "house":test[4],
+        "flat":test[8]||test[6]
     }
     return result;
 

@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>Cards</title>
+    <link rel="stylesheet" type="text/css" href="new.css">
+    <link href="ss.css" rel="stylesheet">
+    <script type="text/javascript" src="new.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="row">
+    <table class="col-lg-1 col-lg-offset-1" style="width:200px; height: 400px; margin-top: 70px;" id="user-buttons">
+        <tr> <td>
+            <a href="#" class="button19" id="replay">New Game</a></tr></td>
+
+        <tr><td>
+            <a href="#" class="button19" id="hit">Hit</a>
+        <tr><td>
+            <a href="#" class="button19" id="stand">Stand</a>
+        </tr></td>
+        <tr class="money"><td>
+            <div id="money"></div>
+        </td></tr>
+    </table>
+    <table  class="table1 col-lg-4 col-lg-offset-1"style="position:relative; height: 520px; width:575px;">
+        <tr><td>
+            <div id="user-hand" class="hand">
+                <h2>User Hand</h2>
+            </div></td></tr>
+        <tr><td>
+            <div id="dealer-hand" class="hand">
+                <h2>Dealer Hand</h2>
+            </div>
+        </td></tr>
+    </table>
+
+    <div id="image"></div>
+    <div id="result">
+        Your Score:
+        <div id="user-score"class="score">
+            <div id="bust"></div>
+    </div>
+        <br>
+    Dealer's Score:
+        <div id="dealer-score"class="score">
+    </div>
+
+</div>
+    <div id="game-status"></div>
+</div>
+</body>
+</html>

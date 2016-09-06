@@ -1,10 +1,6 @@
 
-window.addEventListener("load", start, false);
+window.addEventListener("load", newGame, false);
 
-function start()
-{
-    newGame();
-}
 
 function newGame()
 {
@@ -124,7 +120,6 @@ function Deck()
 
     this.getValue = function getValue(hand)
     {
-        console.log(hand);
         var result=0, aces=0, temp=0;
         for(var i=0; i<hand.length; i++){
             if(hand[i].val>=10){temp=10;}
@@ -169,7 +164,6 @@ function Deck()
             this.dealerBust = false;
             hit.setAttribute("style", "");
             stand.setAttribute("style", "");
-            dealerScore.setAttribute("style", "");
             this.currentUser = [];
             this.currentDealer = [];
             result.setAttribute("style", "visibility:visible");
@@ -269,14 +263,6 @@ function Deck()
 
 
     }
-
-    this.show = function show()
-    {
-        for(var i=0; i<this.deck.length; i++)
-        {
-            this.deck[i].showCard();
-        }
-    };
 }
 
 

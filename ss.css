@@ -13,9 +13,9 @@ body {
     border-radius: 8px;
 }
 #image{
-    position: absolute;
+    position: relative;
     top:130px;
-    right:60px;
+    left:70px;
     height:406px;
     width:392px;
     background-image: url("bender.png");
@@ -49,7 +49,7 @@ a.button19 {
     transition: .2s;
     width:150px;
     text-align: center;
-    margin-left: 50px;
+    margin-left: 20px;
 }
 .button19:hover {
     background: rgb(167,91,41) linear-gradient(rgb(126,69,31), rgb(167,91,41) 80%);

@@ -106,4 +106,33 @@ div#bust{
     color:black;
     border:1px solid white;
     background-color: antiquewhite;
+    margin-left: 10px;
+}
+div.card#hidden-card
+{
+    background-color: #CBE0FD;
+}
+
+div.card#hidden-card div
+{
+    visibility: hidden;
+}
+div.bet{
+    font-size:17px;
+    font-weight: bold;
+    margin-left: 40px;
+    width:100px;
+    color: white;
+    text-shadow: black 2px 2px 1px;
+}
+#bet{
+    margin-left: 36px;
+    width:100px;
+}
+#button-bet{
+    margin-top: 10px;
+    margin-left:62px;
+    background-color: seagreen;
+    color:white;
+    border-radius: 6px;
 }

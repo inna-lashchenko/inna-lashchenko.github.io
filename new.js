@@ -55,6 +55,7 @@ function Deck()
     var bust = document.getElementById("bust");
     var result = document.getElementById("result");
     var betInput = document.getElementById("bet");
+    var btn = document.getElementById("button-bet");
 
 
     that.newDeck = function newDeck()
@@ -171,6 +172,7 @@ function Deck()
             status.innerHTML="Check your bet";
         }
         else {
+            btn.disabled = true;
             status.innerHTML = "";
             moneyDiv.innerHTML="";
             moneyDiv.innerHTML = "YOUR MONEY:" + that.money + "$";
@@ -252,6 +254,7 @@ function Deck()
         document.getElementById("hidden-card").setAttribute("id","");
         hit.setAttribute("style", "visibility:hidden;");
         stand.setAttribute("style", "visibility:hidden;");
+        btn.disabled = false;
 
         if(blackjack)
         {

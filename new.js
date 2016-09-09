@@ -7,7 +7,7 @@ function newGame()
     var deck1 = new Deck();
     deck1.createDeck();
     deck1.shuffle();
-    deck1.deal();
+    document.getElementById("button-bet").addEventListener("click", function(){deck1.deal();}, false);
     document.getElementById("hit").addEventListener("click", function(){deck1.hit();},false);
     document.getElementById("stand").addEventListener("click", function(){deck1.stand();},false);
     document.getElementById("replay").addEventListener("click", function(){deck1.deal();}, false);
@@ -19,32 +19,33 @@ function Card(suit, val, sign)
     this.suit = suit;
     this.val = val;
     this.sign = sign;
-}
 
-Card.prototype.showCard =function showCard()
-{
-    var html="", suit_text="";
-
-    switch(this.suit)
+    this.showCard = function showCard()
     {
-        case "hearts": suit_text = "&hearts;";
-            break;
-        case "diamonds": suit_text = "&diams;";
-            break;
-        case "spades": suit_text = "&spades;";
-            break;
-        case "clubs": suit_text = "&clubs;";
-            break;
-    }
-    html="<div class='card " + this.suit + "'><div class='card-value'>" + this.sign + "</div><div class='suit'>" + suit_text + "</div><div class='main-number'>"+this.sign +"</div><div class='invert card-value'>"+this.sign+"</div><div class='invert suit'>"+suit_text+"</div></div>";
+        var html="", suit_text="";
+
+        switch(this.suit)
+        {
+            case "hearts": suit_text = "&hearts;";
+                break;
+            case "diamonds": suit_text = "&diams;";
+                break;
+            case "spades": suit_text = "&spades;";
+                break;
+            case "clubs": suit_text = "&clubs;";
+                break;
+        }
+        html="<div class='card " + this.suit + "'><div class='card-value'>" + this.sign + "</div><div class='suit'>" + suit_text + "</div><div class='main-number'>"+this.sign +"</div><div class='invert card-value'>"+this.sign+"</div><div class='invert suit'>"+suit_text+"</div></div>";
         return html;
+    }
 }
 
 
 function Deck()
 {
-    this.deck = [];
-    this.money = 100;
+    var that=this;
+    that.deck = [];
+    that.money = 100;
     var userHand = document.getElementById("user-hand");
     var dealerHand = document.getElementById("dealer-hand");
     var userScore = document.getElementById("user-score");
@@ -53,15 +54,17 @@ function Deck()
     var moneyDiv = document.getElementById("money");
     var bust = document.getElementById("bust");
     var result = document.getElementById("result");
+    var betInput = document.getElementById("bet");
 
-    this.newDeck = function newDeck()
+
+    that.newDeck = function newDeck()
     {
         this.createDeck();
         this.shuffle();
 
     }
 
-    this.createDeck = function createDeck()
+    that.createDeck = function createDeck()
     {
         var numCards=0;
         var suit, sign;
@@ -100,7 +103,7 @@ function Deck()
         }
     }
 
-    this.shuffle = function shuffle()
+    that.shuffle = function shuffle()
     {
         var randomDeck = [];
         var empty = false;
@@ -118,15 +121,16 @@ function Deck()
     };
 
 
-    this.getValue = function getValue(hand)
+    that.getValue = function getValue(hand)
     {
         var result=0, aces=0, temp=0;
-        for(var i=0; i<hand.length; i++){
-            if(hand[i].val>=10){temp=10;}
-            else if(hand[i].val==1){temp=11; aces++;}
-            else temp=hand[i].val;
-            result+=temp;
-        }
+        if(hand.length){
+            for(var i=0; i<hand.length; i++){
+                if(hand[i].val>=10){temp=10;}
+                else if(hand[i].val==1){temp=11; aces++;}
+                else temp=hand[i].val;
+                result+=temp;
+            }
         if(result>21&&aces>0){
             do{
                 result=result-10;
@@ -134,28 +138,42 @@ function Deck()
             }
             while(result>21&&aces>0)
         }
+        }
+        else{
+            if(hand.val>=10)result=10;
+            else if(hand.val==1) result=11;
+            else result=hand.val;
+        }
 
         return result;
     };
 
-    this.emptyDeck = function emptyDeck()
+    that.emptyDeck = function emptyDeck()
     {
         if(this.deck.length < 1) return true;
         else return false;
     }
 
-    this.deal = function deal()
+    that.bet = function bet(){
+        var betText = betInput.value; console.log(betText);
+        if ( ! betText.match(/^[0-9]+$/) || betText < 1 || betText > that.money) {
+            return false;
+        }
+        betInput.disabled = true;
+        that.money=that.money-betText;
+        return true;
+    }
+
+    that.deal = function deal()
     {
-        if(this.money<=0){
-            result.innerHTML="OUT OF MONEY";
-            hit.setAttribute("style", "visibility:hidden;");
-            stand.setAttribute("style", "visibility:hidden;");
-            replay.setAttribute("style", "visibility:hidden;");
+        if(!that.bet()){
+            result.setAttribute("style","visibility:hidden");
+            status.innerHTML="Check your bet";
         }
         else {
-            this.money--;
             status.innerHTML = "";
-            moneyDiv.innerHTML = "YOUR MONEY: " + this.money + "$";
+            moneyDiv.innerHTML="";
+            moneyDiv.innerHTML = "YOUR MONEY:" + that.money + "$";
             dealerHand.innerHTML = "<h2>Dealer's Hand:</h2>";
             userHand.innerHTML = "<h2>Your Hand:</h2>";
             this.userTotal = 0;
@@ -182,17 +200,20 @@ function Deck()
                 this.currentDealer.push(this.deck.pop());
                 dealerHand.innerHTML += this.currentDealer[i].showCard();
             }
-            this.dealerTotal = this.getValue(this.currentDealer);
+            this.dealerTotal = this.getValue(this.currentDealer[1]);
             dealerScore.innerHTML = this.dealerTotal;
+
+            var firstCard = dealerHand.getElementsByClassName("card")[0];
+            firstCard.setAttribute("id", "hidden-card");
 
 
             var blackjack = true;
             if (this.userTotal === 21 && this.dealerTotal < 21) this.gameOver(blackjack);
             else if (this.dealerTotal === 21) this.gameOver();
-        }
-    };
 
-    this.hit = function hit()
+        } };
+
+    that.hit = function hit()
     {
         if(this.emptyDeck())this.newDeck();
         this.currentUser.push(this.deck.pop());
@@ -209,7 +230,7 @@ function Deck()
         }
     };
 
-    this.stand = function stand()
+    that.stand = function stand()
     {
         while(this.dealerTotal < 17)
         {
@@ -226,18 +247,19 @@ function Deck()
         this.gameOver();
     }
 
-    this.gameOver = function gameOver(blackjack)
+    that.gameOver = function gameOver(blackjack)
     {
-
-
+        document.getElementById("hidden-card").setAttribute("id","");
         hit.setAttribute("style", "visibility:hidden;");
         stand.setAttribute("style", "visibility:hidden;");
 
         if(blackjack)
         {
-            this.money +=3;
+            that.money +=betInput.value*2;
             result.setAttribute("style","visibility:hidden");
             status.innerHTML ="YOU GOT BLACKJACK";
+            moneyDiv.innerHTML = "YOUR MONEY:" + that.money + "$";
+            betInput.disabled=false;
 
 
         }
@@ -245,21 +267,26 @@ function Deck()
         else if(this.userTotal > this.dealerTotal && this.userBust === false || this.dealerBust ===true)
         {
 
-            this.money+=2;
+            that.money+=betInput.value*2;
             result.setAttribute("style","visibility:hidden");
             status.innerHTML ="YOU WIN!";
+            moneyDiv.innerHTML = "YOUR MONEY:" + that.money + "$";
+            betInput.disabled=false;
         }
         else if(this.userTotal === this.dealerTotal && this.userBust === false)
         {
 
-            this.money++;
+            that.money+=betInput.value*1;
             result.setAttribute("style","visibility:hidden");
             status.innerHTML="TIE";
+            moneyDiv.innerHTML = "YOUR MONEY:" + that.money + "$";
+            betInput.disabled=false;
 
         }
 
         else {result.setAttribute("style","visibility:hidden");
-            status.innerHTML="YOU LOSE!";}
+            status.innerHTML="YOU LOSE!";
+            betInput.disabled=false;}
 
 
     }
